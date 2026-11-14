@@ -87,5 +87,36 @@ namespace MusicCollection
         {
             Console.WriteLine("Зведена таблиця в процесі оновлення...");
         }
+        static void Showabout()
+        {
+            Console.WriteLine("=== Про  Sзастосунок ===");
+            Console.WriteLine("Тема №7: Музична колекція");
+            Console.WriteLine("Головна сутність: Трек (8 полів)");
+            Console.WriteLine("1. Код (int)");
+            Console.WriteLine("2. Виконавець (string)");
+            Console.WriteLine("3. Назва треку (string)");
+            Console.WriteLine("4. Альбом (string)");
+            Console.WriteLine("5. Рік випуску (int)");
+            Console.WriteLine("6. Тривалість у секундах (int)");
+            Console.WriteLine("7. Код жанру (int)");
+            Console.WriteLine("8. Кількість прослуховувань (int)");
+        }
+
+        static double CalculatePlaylistDuration(int trackCount, double avgMinutes)
+        {
+            return trackCount * avgMinutes;
+        }
+
+        static void RunDurationCalculation()
+        {
+            Console.WriteLine("=== Розрахунок загальної тривалості плейлиста ===");
+            int count = 12;
+            double avgMinutes = 3.5;
+
+            double total = CalculatePlaylistDuration(count, avgMinutes);
+            Console.WriteLine($"Кількість треків: {count}");
+            Console.WriteLine($"Середня тривалість треку: {avgMinutes} хв");
+            Console.WriteLine($"Загальна тривалість: {total:F2} хв.");
+        }
     }
 }
