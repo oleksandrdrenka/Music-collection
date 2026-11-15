@@ -118,5 +118,60 @@ namespace MusicCollection
             Console.WriteLine($"Середня тривалість треку: {avgMinutes} хв");
             Console.WriteLine($"Загальна тривалість: {total:F2} хв.");
         }
+        static int ReadInt(string prompt, int min, int max)
+        {
+            while (true)
+            {
+                Console.Write(prompt);
+                if (int.TryParse(Console.ReadLine(), out int value) && value >= min && value <= max)
+                {
+                    return value;
+                }
+                Console.WriteLine($"Помилка: введіть ціле число від {min} до {max}.");
+            }
+        }
+
+        static double ReadDouble(string prompt, double min, double max)
+        {
+            while (true)
+            {
+                Console.Write(prompt);
+                if (double.TryParse(Console.ReadLine(), out double value) && value >= min && value <= max)
+                {
+                    return value;
+                }
+                Console.WriteLine($"Помилка: введіть число від {min} до {max}.");
+            }
+        }
+
+        static void Rundurationcalculation()
+        {
+            Console.WriteLine("=== Розрахунок загальної тривалості плейлиста ===");
+            int count = ReadInt("Введіть кількість треків (1–500): ", 1, 500);
+            double avgMinutes = ReadDouble("Введіть середню тривалість треку в хв (0.5–30.0): ", 0.5, 30.0);
+
+            double total = CalculatePlaylistDuration(count, avgMinutes);
+            Console.WriteLine($"Загальна тривалість плейлиста: {total:F2} хв.");
+        }
+
+        static void Runtabulation()
+        {
+            Console.WriteLine("=== Табулювання: розмір WAV-файлу від часу ===");
+            double from = ReadDouble("Введіть початковий час (хв, мін 1.0): ", 1.0, 10.0);
+            double to = ReadDouble("Введіть кінцевий час (хв, макс 20.0): ", from, 20.0);
+            double step = ReadDouble("Введіть крок (0.1–2.0): ", 0.1, 2.0);
+            double mbPerMinute = 10.094;
+
+            Console.WriteLine("+----------------------+----------------------+");
+            Console.WriteLine("| Тривалість t (хв)    | Орієнтовний обсяг MB |");
+            Console.WriteLine("+----------------------+----------------------+");
+
+            for (double t = from; t <= to + 1e-9; t += step)
+            {
+                double size = t * mbPerMinute;
+                Console.WriteLine($"| {t,20:F2} | {size,20:F2} |");
+            }
+            Console.WriteLine("+----------------------+----------------------+");
+        }
     }
 }
