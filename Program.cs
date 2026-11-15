@@ -23,7 +23,7 @@ namespace MusicCollection
                     case "1": ShowAbout(); Pause(); break;
                     case "2": RunTabulation(); Pause(); break;
                     case "3": ShowTwoDimensionalTable(); Pause(); break;
-                    case "4":
+                    case "4": RunDurationCalculation(); Pause(); break;
                     case "5":
                     case "6":
                     case "7":
@@ -42,7 +42,7 @@ namespace MusicCollection
             Console.WriteLine("        СИСТЕМА ОБЛІКУ «МУЗИЧНА КОЛЕКЦІЯ»        ");
             Console.WriteLine("==================================================");
             Console.WriteLine("1 — Про програму та структуру сутності");
-            Console.WriteLine("2 — Табулювання:  розрахунок обсягу треку від часу");
+            Console.WriteLine("2 — Табулювання: розрахунок обсягу треку від часу");
             Console.WriteLine("3 — Зведена таблиця прослуховувань (два входи)");
             Console.WriteLine("4 — Розрахунок загальної тривалості плейлиста");
             Console.WriteLine("5 — Показати всі треки (буде пізніше)");
@@ -72,24 +72,14 @@ namespace MusicCollection
             Console.WriteLine("Немає такого пункту. Спробуйте ще раз.");
         }
 
-        static void ShowAbout()
-        {
-            Console.WriteLine("=== Про застосунок ===");
-            Console.WriteLine("Тема №7: Музична колекція");
-        }
-
-        static void RunTabulation()
-        {
-            Console.WriteLine("Табулювання в процесі оновлення...");
-        }
-
         static void ShowTwoDimensionalTable()
         {
             Console.WriteLine("Зведена таблиця в процесі оновлення...");
         }
-        static void Showabout()
+
+        static void ShowAbout()
         {
-            Console.WriteLine("=== Про  Sзастосунок ===");
+            Console.WriteLine("=== Про застосунок ===");
             Console.WriteLine("Тема №7: Музична колекція");
             Console.WriteLine("Головна сутність: Трек (8 полів)");
             Console.WriteLine("1. Код (int)");
@@ -107,17 +97,6 @@ namespace MusicCollection
             return trackCount * avgMinutes;
         }
 
-        static void RunDurationCalculation()
-        {
-            Console.WriteLine("=== Розрахунок загальної тривалості плейлиста ===");
-            int count = 12;
-            double avgMinutes = 3.5;
-
-            double total = CalculatePlaylistDuration(count, avgMinutes);
-            Console.WriteLine($"Кількість треків: {count}");
-            Console.WriteLine($"Середня тривалість треку: {avgMinutes} хв");
-            Console.WriteLine($"Загальна тривалість: {total:F2} хв.");
-        }
         static int ReadInt(string prompt, int min, int max)
         {
             while (true)
@@ -144,7 +123,7 @@ namespace MusicCollection
             }
         }
 
-        static void Rundurationcalculation()
+        static void RunDurationCalculation()
         {
             Console.WriteLine("=== Розрахунок загальної тривалості плейлиста ===");
             int count = ReadInt("Введіть кількість треків (1–500): ", 1, 500);
@@ -154,7 +133,7 @@ namespace MusicCollection
             Console.WriteLine($"Загальна тривалість плейлиста: {total:F2} хв.");
         }
 
-        static void Runtabulation()
+        static void RunTabulation()
         {
             Console.WriteLine("=== Табулювання: розмір WAV-файлу від часу ===");
             double from = ReadDouble("Введіть початковий час (хв, мін 1.0): ", 1.0, 10.0);
