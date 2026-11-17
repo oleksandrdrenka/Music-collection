@@ -10,6 +10,10 @@ namespace MusicCollection
             Console.OutputEncoding = Encoding.UTF8;
             Console.InputEncoding = Encoding.UTF8;
 
+            const int Capacity = 100;
+            double[] values = new double[Capacity];
+            int count = 0;
+
             bool running = true;
 
             while (running)
@@ -25,6 +29,11 @@ namespace MusicCollection
                     case "3": ShowTwoDimensionalTable(); Pause(); break;
                     case "4": RunDurationCalculation(); Pause(); break;
                     case "5":
+                        double newValue = ReadDouble("Введіть число (0–10000): ", 0, 10000);
+                        AddValue(values, ref count, newValue, Capacity);
+                        Console.WriteLine($"Лічильник у Main після виклику: {count}");
+                        Pause();
+                        break;
                     case "6":
                     case "7":
                     case "8": ShowInDevelopment(); Pause(); break;
@@ -45,10 +54,10 @@ namespace MusicCollection
             Console.WriteLine("2 — Табулювання: розрахунок обсягу треку від часу");
             Console.WriteLine("3 — Зведена таблиця прослуховувань (два входи)");
             Console.WriteLine("4 — Розрахунок загальної тривалості плейлиста");
-            Console.WriteLine("5 — Показати всі треки (буде пізніше)");
-            Console.WriteLine("6 — Додати новий трек (буде пізніше)");
-            Console.WriteLine("7 — Пошук треку (буде пізніше)");
-            Console.WriteLine("8 — Зберегти / завантажити файл (буде пізніше)");
+            Console.WriteLine("5 — Додати значення в масив (лаб. 9)");
+            Console.WriteLine("6 — Показати масив (буде пізніше)");
+            Console.WriteLine("7 — Видалити за номером (буде пізніше)");
+            Console.WriteLine("8 — Статистика (буде пізніше)");
             Console.WriteLine("0 — Вихід");
             Console.WriteLine("==================================================");
             Console.Write("Ваш вибір: ");
@@ -95,6 +104,18 @@ namespace MusicCollection
         static double CalculatePlaylistDuration(int trackCount, double avgMinutes)
         {
             return trackCount * avgMinutes;
+        }
+
+        static void AddValue(double[] values, ref int count, double newValue, int capacity)
+        {
+            if (count == capacity)
+            {
+                Console.WriteLine("Місця більше немає.");
+                return;
+            }
+
+            values[count] = newValue;
+            count++;
         }
 
         static int ReadInt(string prompt, int min, int max)
