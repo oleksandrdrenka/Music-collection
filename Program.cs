@@ -35,6 +35,9 @@ namespace MusicCollection
                         Pause();
                         break;
                     case "6":
+                        PrintValues(values, count);
+                        Pause();
+                        break;
                     case "7":
                     case "8": ShowInDevelopment(); Pause(); break;
                     case "0": running = false; break;
@@ -55,7 +58,7 @@ namespace MusicCollection
             Console.WriteLine("3 — Зведена таблиця прослуховувань (два входи)");
             Console.WriteLine("4 — Розрахунок загальної тривалості плейлиста");
             Console.WriteLine("5 — Додати значення в масив (лаб. 9)");
-            Console.WriteLine("6 — Показати масив (буде пізніше)");
+            Console.WriteLine("6 — Показати масив (лаб. 9)");
             Console.WriteLine("7 — Видалити за номером (буде пізніше)");
             Console.WriteLine("8 — Статистика (буде пізніше)");
             Console.WriteLine("0 — Вихід");
@@ -116,6 +119,28 @@ namespace MusicCollection
 
             values[count] = newValue;
             count++;
+        }
+
+        static void PrintValues(double[] values, int count)
+        {
+            if (count == 0)
+            {
+                Console.WriteLine("Масив порожній. Спочатку додайте значення (пункт 5).");
+                return;
+            }
+
+            Console.WriteLine("=== Вміст масиву ===");
+            Console.WriteLine("+------+----------------------+");
+            Console.WriteLine("| №    | Значення             |");
+            Console.WriteLine("+------+----------------------+");
+
+            for (int i = 0; i < count; i++)
+            {
+                Console.WriteLine($"| {i + 1,-4} | {values[i],20:F2} |");
+            }
+
+            Console.WriteLine("+------+----------------------+");
+            Console.WriteLine($"Елементів: {count}");
         }
 
         static int ReadInt(string prompt, int min, int max)
