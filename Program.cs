@@ -38,7 +38,12 @@ namespace MusicCollection
                         PrintValues(values, count);
                         Pause();
                         break;
-                    case "7": ShowInDevelopment(); Pause(); break;
+                    case "7":
+                        int removeNumber = ReadInt("Введіть номер елемента для видалення: ", 1, Capacity);
+                        RemoveAt(values, ref count, removeNumber);
+                        Console.WriteLine($"Лічильник у Main після виклику: {count}");
+                        Pause();
+                        break;
                     case "8":
                         ShowStatistics(values, count);
                         Pause();
@@ -62,7 +67,7 @@ namespace MusicCollection
             Console.WriteLine("4 — Розрахунок загальної тривалості плейлиста");
             Console.WriteLine("5 — Додати значення в масив (лаб. 9)");
             Console.WriteLine("6 — Показати масив (лаб. 9)");
-            Console.WriteLine("7 — Видалити за номером (буде пізніше)");
+            Console.WriteLine("7 — Видалити за номером (лаб. 9)");
             Console.WriteLine("8 — Статистика (лаб. 9)");
             Console.WriteLine("0 — Вихід");
             Console.WriteLine("==================================================");
@@ -124,6 +129,24 @@ namespace MusicCollection
             count++;
         }
 
+        static void RemoveAt(double[] values, ref int count, int index)
+        {
+            if (index < 1 || index > count)
+            {
+                Console.WriteLine($"Немає елемента з номером {index}. Зараз елементів: {count}.");
+                return;
+            }
+
+            for (int i = index - 1; i < count - 1; i++)
+            {
+                values[i] = values[i + 1];
+            }
+
+            count--;
+            values[count] = 0;
+            Console.WriteLine($"Елемент №{index} видалено.");
+        }
+
         static void PrintValues(double[] values, int count)
         {
             if (count == 0)
@@ -145,6 +168,7 @@ namespace MusicCollection
             Console.WriteLine("+------+----------------------+");
             Console.WriteLine($"Елементів: {count}");
         }
+
         static void FindMax(double[] values, int count, out double max, out int maxNumber)
         {
             if (count == 0)
