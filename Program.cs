@@ -38,8 +38,11 @@ namespace MusicCollection
                         PrintValues(values, count);
                         Pause();
                         break;
-                    case "7":
-                    case "8": ShowInDevelopment(); Pause(); break;
+                    case "7": ShowInDevelopment(); Pause(); break;
+                    case "8":
+                        ShowStatistics(values, count);
+                        Pause();
+                        break;
                     case "0": running = false; break;
                     default: ShowInvalidChoice(); Pause(); break;
                 }
@@ -60,7 +63,7 @@ namespace MusicCollection
             Console.WriteLine("5 — Додати значення в масив (лаб. 9)");
             Console.WriteLine("6 — Показати масив (лаб. 9)");
             Console.WriteLine("7 — Видалити за номером (буде пізніше)");
-            Console.WriteLine("8 — Статистика (буде пізніше)");
+            Console.WriteLine("8 — Статистика (лаб. 9)");
             Console.WriteLine("0 — Вихід");
             Console.WriteLine("==================================================");
             Console.Write("Ваш вибір: ");
@@ -141,6 +144,52 @@ namespace MusicCollection
 
             Console.WriteLine("+------+----------------------+");
             Console.WriteLine($"Елементів: {count}");
+        }
+        static void FindMax(double[] values, int count, out double max, out int maxNumber)
+        {
+            if (count == 0)
+            {
+                max = 0;
+                maxNumber = 0;
+                return;
+            }
+
+            max = values[0];
+            maxNumber = 1;
+
+            for (int i = 1; i < count; i++)
+            {
+                if (values[i] > max)
+                {
+                    max = values[i];
+                    maxNumber = i + 1;
+                }
+            }
+        }
+
+        static void ShowStatistics(double[] values, int count)
+        {
+            Console.WriteLine("=== Статистика ===");
+
+            FindMax(values, count, out double max, out int maxNumber);
+
+            if (maxNumber == 0)
+            {
+                Console.WriteLine("Масив порожній, статистики немає.");
+                return;
+            }
+
+            double sum = 0;
+            for (int i = 0; i < count; i++)
+            {
+                sum += values[i];
+            }
+            double average = sum / count;
+
+            Console.WriteLine($"Елементів: {count}");
+            Console.WriteLine($"Найбільше значення: {max:F2} (номер {maxNumber})");
+            Console.WriteLine($"Сума: {sum:F2}");
+            Console.WriteLine($"Середнє: {average:F2}");
         }
 
         static int ReadInt(string prompt, int min, int max)
