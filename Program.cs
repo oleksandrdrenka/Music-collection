@@ -48,6 +48,10 @@ namespace MusicCollection
                         ShowStatistics(values, count);
                         Pause();
                         break;
+                    case "9":
+                        RunReferenceDemo();
+                        Pause();
+                        break;
                     case "0": running = false; break;
                     default: ShowInvalidChoice(); Pause(); break;
                 }
@@ -69,6 +73,7 @@ namespace MusicCollection
             Console.WriteLine("6 — Показати масив (лаб. 9)");
             Console.WriteLine("7 — Видалити за номером (лаб. 9)");
             Console.WriteLine("8 — Статистика (лаб. 9)");
+            Console.WriteLine("9 — Дослід: значиме і посилальне (лаб. 9)");
             Console.WriteLine("0 — Вихід");
             Console.WriteLine("==================================================");
             Console.Write("Ваш вибір: ");
@@ -214,6 +219,45 @@ namespace MusicCollection
             Console.WriteLine($"Найбільше значення: {max:F2} (номер {maxNumber})");
             Console.WriteLine($"Сума: {sum:F2}");
             Console.WriteLine($"Середнє: {average:F2}");
+        }
+
+        static void ChangeInt(int number)
+        {
+            number = 999;
+            Console.WriteLine($"  Усередині ChangeInt: number = {number}");
+        }
+
+        static void ChangeArrayElement(double[] array)
+        {
+            array[0] = 999;
+            Console.WriteLine($"  Усередині ChangeArrayElement: array[0] = {array[0]}");
+        }
+
+        static void RunReferenceDemo()
+        {
+            Console.WriteLine("=== Дослід: значиме і посилальне ===");
+
+            int number = 5;
+            double[] array = { 5, 7, 9 };
+
+            Console.WriteLine();
+            Console.WriteLine("До викликів:");
+            Console.WriteLine($"  number = {number}");
+            Console.WriteLine($"  array[0] = {array[0]}");
+
+            Console.WriteLine();
+            Console.WriteLine("Виклик ChangeInt(number) без ref:");
+            ChangeInt(number);
+            Console.WriteLine($"  У Main після виклику: number = {number}");
+
+            Console.WriteLine();
+            Console.WriteLine("Виклик ChangeArrayElement(array):");
+            ChangeArrayElement(array);
+            Console.WriteLine($"  У Main після виклику: array[0] = {array[0]}");
+
+            Console.WriteLine();
+            Console.WriteLine("Висновок: int передався копією, тому оригінал не змінився.");
+            Console.WriteLine("Масив передався посиланням, тому метод змінив той самий масив.");
         }
 
         static int ReadInt(string prompt, int min, int max)
