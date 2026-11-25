@@ -5,14 +5,23 @@ namespace MusicCollection
 {
     internal class Program
     {
+        const int Capacity = 100;
+
+        static int[] ids = new int[Capacity];
+        static string[] artists = new string[Capacity];
+        static string[] titles = new string[Capacity];
+        static string[] albums = new string[Capacity];
+        static int[] years = new int[Capacity];
+        static int[] durations = new int[Capacity];
+        static int[] genreIds = new int[Capacity];
+        static int[] plays = new int[Capacity];
+        static int count = 0;
+        static int nextId = 1;
+
         static void Main(string[] args)
         {
             Console.OutputEncoding = Encoding.UTF8;
             Console.InputEncoding = Encoding.UTF8;
-
-            const int Capacity = 100;
-            double[] values = new double[Capacity];
-            int count = 0;
 
             bool running = true;
 
@@ -24,34 +33,17 @@ namespace MusicCollection
 
                 switch (choice)
                 {
-                    case "1": ShowAbout(); Pause(); break;
-                    case "2": RunTabulation(); Pause(); break;
-                    case "3": ShowTwoDimensionalTable(); Pause(); break;
-                    case "4": RunDurationCalculation(); Pause(); break;
+                    case "1":
+                    case "2":
+                    case "3":
+                    case "4":
                     case "5":
-                        double newValue = ReadDouble("Введіть число (0–10000): ", 0, 10000);
-                        AddValue(values, ref count, newValue, Capacity);
-                        Console.WriteLine($"Лічильник у Main після виклику: {count}");
-                        Pause();
-                        break;
                     case "6":
-                        PrintValues(values, count);
-                        Pause();
-                        break;
                     case "7":
-                        int removeNumber = ReadInt("Введіть номер елемента для видалення: ", 1, Capacity);
-                        RemoveAt(values, ref count, removeNumber);
-                        Console.WriteLine($"Лічильник у Main після виклику: {count}");
-                        Pause();
-                        break;
                     case "8":
-                        ShowStatistics(values, count);
-                        Pause();
-                        break;
                     case "9":
-                        RunReferenceDemo();
-                        Pause();
-                        break;
+                    case "10": ShowInDevelopment(); Pause(); break;
+                    case "11": ShowAbout(); Pause(); break;
                     case "0": running = false; break;
                     default: ShowInvalidChoice(); Pause(); break;
                 }
@@ -65,15 +57,17 @@ namespace MusicCollection
             Console.WriteLine("==================================================");
             Console.WriteLine("        СИСТЕМА ОБЛІКУ «МУЗИЧНА КОЛЕКЦІЯ»        ");
             Console.WriteLine("==================================================");
-            Console.WriteLine("1 — Про програму та структуру сутності");
-            Console.WriteLine("2 — Табулювання: розрахунок обсягу треку від часу");
-            Console.WriteLine("3 — Зведена таблиця прослуховувань (два входи)");
-            Console.WriteLine("4 — Розрахунок загальної тривалості плейлиста");
-            Console.WriteLine("5 — Додати значення в масив (лаб. 9)");
-            Console.WriteLine("6 — Показати масив (лаб. 9)");
-            Console.WriteLine("7 — Видалити за номером (лаб. 9)");
-            Console.WriteLine("8 — Статистика (лаб. 9)");
-            Console.WriteLine("9 — Дослід: значиме і посилальне (лаб. 9)");
+            Console.WriteLine("1 — Показати всі треки");
+            Console.WriteLine("2 — Додати трек");
+            Console.WriteLine("3 — Знайти за умовою");
+            Console.WriteLine("4 — Змінити трек");
+            Console.WriteLine("5 — Видалити трек");
+            Console.WriteLine("6 — Зведена таблиця");
+            Console.WriteLine("7 — Зберегти у файл");
+            Console.WriteLine("8 — Завантажити з файлу");
+            Console.WriteLine("9 — Експорт у CSV");
+            Console.WriteLine("10 — Заповнити тестовими даними");
+            Console.WriteLine("11 — Про програму");
             Console.WriteLine("0 — Вихід");
             Console.WriteLine("==================================================");
             Console.Write("Ваш вибір: ");
@@ -89,17 +83,12 @@ namespace MusicCollection
 
         static void ShowInDevelopment()
         {
-            Console.WriteLine("Цей пункт ще в розробці (буде у наступних роботах).");
+            Console.WriteLine("Поки не зроблено.");
         }
 
         static void ShowInvalidChoice()
         {
             Console.WriteLine("Немає такого пункту. Спробуйте ще раз.");
-        }
-
-        static void ShowTwoDimensionalTable()
-        {
-            Console.WriteLine("Зведена таблиця в процесі оновлення...");
         }
 
         static void ShowAbout()
@@ -115,149 +104,7 @@ namespace MusicCollection
             Console.WriteLine("6. Тривалість у секундах (int)");
             Console.WriteLine("7. Код жанру (int)");
             Console.WriteLine("8. Кількість прослуховувань (int)");
-        }
-
-        static double CalculatePlaylistDuration(int trackCount, double avgMinutes)
-        {
-            return trackCount * avgMinutes;
-        }
-
-        static void AddValue(double[] values, ref int count, double newValue, int capacity)
-        {
-            if (count == capacity)
-            {
-                Console.WriteLine("Місця більше немає.");
-                return;
-            }
-
-            values[count] = newValue;
-            count++;
-        }
-
-        static void RemoveAt(double[] values, ref int count, int index)
-        {
-            if (index < 1 || index > count)
-            {
-                Console.WriteLine($"Немає елемента з номером {index}. Зараз елементів: {count}.");
-                return;
-            }
-
-            for (int i = index - 1; i < count - 1; i++)
-            {
-                values[i] = values[i + 1];
-            }
-
-            count--;
-            values[count] = 0;
-            Console.WriteLine($"Елемент №{index} видалено.");
-        }
-
-        static void PrintValues(double[] values, int count)
-        {
-            if (count == 0)
-            {
-                Console.WriteLine("Масив порожній. Спочатку додайте значення (пункт 5).");
-                return;
-            }
-
-            Console.WriteLine("=== Вміст масиву ===");
-            Console.WriteLine("+------+----------------------+");
-            Console.WriteLine("| №    | Значення             |");
-            Console.WriteLine("+------+----------------------+");
-
-            for (int i = 0; i < count; i++)
-            {
-                Console.WriteLine($"| {i + 1,-4} | {values[i],20:F2} |");
-            }
-
-            Console.WriteLine("+------+----------------------+");
-            Console.WriteLine($"Елементів: {count}");
-        }
-
-        static void FindMax(double[] values, int count, out double max, out int maxNumber)
-        {
-            if (count == 0)
-            {
-                max = 0;
-                maxNumber = 0;
-                return;
-            }
-
-            max = values[0];
-            maxNumber = 1;
-
-            for (int i = 1; i < count; i++)
-            {
-                if (values[i] > max)
-                {
-                    max = values[i];
-                    maxNumber = i + 1;
-                }
-            }
-        }
-
-        static void ShowStatistics(double[] values, int count)
-        {
-            Console.WriteLine("=== Статистика ===");
-
-            FindMax(values, count, out double max, out int maxNumber);
-
-            if (maxNumber == 0)
-            {
-                Console.WriteLine("Масив порожній, статистики немає.");
-                return;
-            }
-
-            double sum = 0;
-            for (int i = 0; i < count; i++)
-            {
-                sum += values[i];
-            }
-            double average = sum / count;
-
-            Console.WriteLine($"Елементів: {count}");
-            Console.WriteLine($"Найбільше значення: {max:F2} (номер {maxNumber})");
-            Console.WriteLine($"Сума: {sum:F2}");
-            Console.WriteLine($"Середнє: {average:F2}");
-        }
-
-        static void ChangeInt(int number)
-        {
-            number = 999;
-            Console.WriteLine($"  Усередині ChangeInt: number = {number}");
-        }
-
-        static void ChangeArrayElement(double[] array)
-        {
-            array[0] = 999;
-            Console.WriteLine($"  Усередині ChangeArrayElement: array[0] = {array[0]}");
-        }
-
-        static void RunReferenceDemo()
-        {
-            Console.WriteLine("=== Дослід: значиме і посилальне ===");
-
-            int number = 5;
-            double[] array = { 5, 7, 9 };
-
-            Console.WriteLine();
-            Console.WriteLine("До викликів:");
-            Console.WriteLine($"  number = {number}");
-            Console.WriteLine($"  array[0] = {array[0]}");
-
-            Console.WriteLine();
-            Console.WriteLine("Виклик ChangeInt(number) без ref:");
-            ChangeInt(number);
-            Console.WriteLine($"  У Main після виклику: number = {number}");
-
-            Console.WriteLine();
-            Console.WriteLine("Виклик ChangeArrayElement(array):");
-            ChangeArrayElement(array);
-            Console.WriteLine($"  У Main після виклику: array[0] = {array[0]}");
-
-            Console.WriteLine();
-            Console.WriteLine("Висновок: int передався копією, тому оригінал не змінився.");
-            Console.WriteLine("Масив передався посиланням, тому метод змінив той самий масив.");
+            Console.WriteLine($"Місткість сховища: {Capacity}. Зайнято: {count}.");
         }
 
         static int ReadInt(string prompt, int min, int max)
@@ -284,36 +131,6 @@ namespace MusicCollection
                 }
                 Console.WriteLine($"Помилка: введіть число від {min} до {max}.");
             }
-        }
-
-        static void RunDurationCalculation()
-        {
-            Console.WriteLine("=== Розрахунок загальної тривалості плейлиста ===");
-            int count = ReadInt("Введіть кількість треків (1–500): ", 1, 500);
-            double avgMinutes = ReadDouble("Введіть середню тривалість треку в хв (0.5–30.0): ", 0.5, 30.0);
-
-            double total = CalculatePlaylistDuration(count, avgMinutes);
-            Console.WriteLine($"Загальна тривалість плейлиста: {total:F2} хв.");
-        }
-
-        static void RunTabulation()
-        {
-            Console.WriteLine("=== Табулювання: розмір WAV-файлу від часу ===");
-            double from = ReadDouble("Введіть початковий час (хв, мін 1.0): ", 1.0, 10.0);
-            double to = ReadDouble("Введіть кінцевий час (хв, макс 20.0): ", from, 20.0);
-            double step = ReadDouble("Введіть крок (0.1–2.0): ", 0.1, 2.0);
-            double mbPerMinute = 10.094;
-
-            Console.WriteLine("+----------------------+----------------------+");
-            Console.WriteLine("| Тривалість t (хв)    | Орієнтовний обсяг MB |");
-            Console.WriteLine("+----------------------+----------------------+");
-
-            for (double t = from; t <= to + 1e-9; t += step)
-            {
-                double size = t * mbPerMinute;
-                Console.WriteLine($"| {t,20:F2} | {size,20:F2} |");
-            }
-            Console.WriteLine("+----------------------+----------------------+");
         }
     }
 }
