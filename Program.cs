@@ -33,7 +33,7 @@ namespace MusicCollection
 
                 switch (choice)
                 {
-                    case "1": ShowInDevelopment(); Pause(); break;
+                    case "1": PrintTracks(); Pause(); break;
                     case "2": AddTrack(); Pause(); break;
                     case "3":
                     case "4":
@@ -137,6 +137,29 @@ namespace MusicCollection
             nextId++;
 
             Console.WriteLine($"Додано трек №{ids[count - 1]}.");
+        }
+
+        static void PrintTracks()
+        {
+            Console.WriteLine("=== Усі  треки ===");
+
+            if (count == 0)
+            {
+                Console.WriteLine("Записів поки немає.");
+                return;
+            }
+
+            Console.WriteLine($"{"№",4}{"Виконавець",-22}{"Назва",-26}{"Альбом",-22}{"Рік",6}{"Трив.",8}{"Жанр",6}{"Прослух.",12}");
+            Console.WriteLine(new string('-', 106));
+
+            for (int i = 0; i < count; i++)
+            {
+                string time = $"{durations[i] / 60}:{durations[i] % 60:D2}";
+                Console.WriteLine($"{ids[i],4}{artists[i],-22}{titles[i],-26}{albums[i],-22}{years[i],6}{time,8}{genreIds[i],6}{plays[i],12}");
+            }
+
+            Console.WriteLine(new string('-', 106));
+            Console.WriteLine($"Записів: {count}.");
         }
 
         static string ReadText(string prompt)
