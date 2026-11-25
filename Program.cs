@@ -33,8 +33,8 @@ namespace MusicCollection
 
                 switch (choice)
                 {
-                    case "1":
-                    case "2":
+                    case "1": ShowInDevelopment(); Pause(); break;
+                    case "2": AddTrack(); Pause(); break;
                     case "3":
                     case "4":
                     case "5":
@@ -105,6 +105,56 @@ namespace MusicCollection
             Console.WriteLine("7. Код жанру (int)");
             Console.WriteLine("8. Кількість прослуховувань (int)");
             Console.WriteLine($"Місткість сховища: {Capacity}. Зайнято: {count}.");
+        }
+
+        static void AddTrack()
+        {
+            Console.WriteLine("=== Додавання треку ===");
+
+            if (count == Capacity)
+            {
+                Console.WriteLine("Сховище заповнене, додати трек неможливо.");
+                return;
+            }
+
+            string artist = ReadText("Виконавець: ");
+            string title = ReadText("Назва треку: ");
+            string album = ReadText("Альбом: ");
+            int year = ReadInt($"Рік випуску (1900–{DateTime.Now.Year}): ", 1900, DateTime.Now.Year);
+            int duration = ReadInt("Тривалість у секундах (1–7200): ", 1, 7200);
+            int genreId = ReadInt("Код жанру (1–10): ", 1, 10);
+            int playCount = ReadInt("Кількість прослуховувань (0–1000000000): ", 0, 1000000000);
+
+            ids[count] = nextId;
+            artists[count] = artist;
+            titles[count] = title;
+            albums[count] = album;
+            years[count] = year;
+            durations[count] = duration;
+            genreIds[count] = genreId;
+            plays[count] = playCount;
+            count++;
+            nextId++;
+
+            Console.WriteLine($"Додано трек №{ids[count - 1]}.");
+        }
+
+        static string ReadText(string prompt)
+        {
+            while (true)
+            {
+                Console.Write(prompt);
+                string input = Console.ReadLine();
+                if (input != null)
+                {
+                    input = input.Trim();
+                    if (input.Length >= 2)
+                    {
+                        return input;
+                    }
+                }
+                Console.WriteLine("Помилка: введіть текст не коротший за 2 символи.");
+            }
         }
 
         static int ReadInt(string prompt, int min, int max)
