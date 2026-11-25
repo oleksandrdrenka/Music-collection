@@ -166,6 +166,27 @@ namespace MusicCollection
             Console.WriteLine($"Додано {testCount} тестових треків. Зайнято: {count} із {Capacity}.");
         }
 
+        static int CalculateTotalDuration(int[] trackDurations, int trackCount)
+        {
+            int total = 0;
+
+            for (int i = 0; i < trackCount; i++)
+            {
+                total += trackDurations[i];
+            }
+
+            return total;
+        }
+
+        static string FormatDuration(int totalSeconds)
+        {
+            int hours = totalSeconds / 3600;
+            int minutes = totalSeconds % 3600 / 60;
+            int seconds = totalSeconds % 60;
+
+            return $"{hours} год {minutes:D2} хв {seconds:D2} с";
+        }
+
         static void PrintTracks()
         {
             Console.WriteLine("=== Усі треки ===");
@@ -187,6 +208,9 @@ namespace MusicCollection
 
             Console.WriteLine(new string('-', 106));
             Console.WriteLine($"Записів: {count}.");
+
+            int totalSeconds = CalculateTotalDuration(durations, count);
+            Console.WriteLine($"Загальна тривалість колекції: {FormatDuration(totalSeconds)} ({totalSeconds} с).");
         }
 
         static string ReadText(string prompt)
