@@ -41,8 +41,8 @@ namespace MusicCollection
                     case "6":
                     case "7":
                     case "8":
-                    case "9":
-                    case "10": ShowInDevelopment(); Pause(); break;
+                    case "9": ShowInDevelopment(); Pause(); break;
+                    case "10": FillTestData(); Pause(); break;
                     case "11": ShowAbout(); Pause(); break;
                     case "0": running = false; break;
                     default: ShowInvalidChoice(); Pause(); break;
@@ -107,6 +107,20 @@ namespace MusicCollection
             Console.WriteLine($"Місткість сховища: {Capacity}. Зайнято: {count}.");
         }
 
+        static void StoreTrack(string artist, string title, string album, int year, int duration, int genreId, int playCount)
+        {
+            ids[count] = nextId;
+            artists[count] = artist;
+            titles[count] = title;
+            albums[count] = album;
+            years[count] = year;
+            durations[count] = duration;
+            genreIds[count] = genreId;
+            plays[count] = playCount;
+            count++;
+            nextId++;
+        }
+
         static void AddTrack()
         {
             Console.WriteLine("=== Додавання треку ===");
@@ -125,23 +139,36 @@ namespace MusicCollection
             int genreId = ReadInt("Код жанру (1–10): ", 1, 10);
             int playCount = ReadInt("Кількість прослуховувань (0–1000000000): ", 0, 1000000000);
 
-            ids[count] = nextId;
-            artists[count] = artist;
-            titles[count] = title;
-            albums[count] = album;
-            years[count] = year;
-            durations[count] = duration;
-            genreIds[count] = genreId;
-            plays[count] = playCount;
-            count++;
-            nextId++;
+            StoreTrack(artist, title, album, year, duration, genreId, playCount);
 
             Console.WriteLine($"Додано трек №{ids[count - 1]}.");
         }
 
+        static void FillTestData()
+        {
+            Console.WriteLine("=== Заповнення тестовими даними ===");
+
+            const int testCount = 6;
+
+            if (count + testCount > Capacity)
+            {
+                Console.WriteLine($"Недостатньо місця: потрібно {testCount}, вільно {Capacity - count}.");
+                return;
+            }
+
+            StoreTrack("Queen", "Bohemian Rhapsody", "A Night at the Opera", 1975, 354, 1, 1500000);
+            StoreTrack("Океан Ельзи", "Обійми", "Земля", 2013, 255, 1, 820000);
+            StoreTrack("The Beatles", "Yesterday", "Help!", 1965, 125, 2, 1200000);
+            StoreTrack("Pink Floyd", "Time", "The Dark Side of the Moon", 1973, 413, 1, 640000);
+            StoreTrack("Imagine Dragons", "Believer", "Evolve", 2017, 204, 2, 2100000);
+            StoreTrack("Radiohead", "Creep", "Pablo Honey", 1993, 238, 1, 950000);
+
+            Console.WriteLine($"Додано {testCount} тестових треків. Зайнято: {count} із {Capacity}.");
+        }
+
         static void PrintTracks()
         {
-            Console.WriteLine("=== Усі  треки ===");
+            Console.WriteLine("=== Усі треки ===");
 
             if (count == 0)
             {
