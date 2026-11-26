@@ -35,7 +35,7 @@ namespace MusicCollection
                 {
                     case "1": PrintTracks(); Pause(); break;
                     case "2": AddTrack(); Pause(); break;
-                    case "3":
+                    case "3": SearchByText(); Pause(); break;
                     case "4":
                     case "5":
                     case "6":
@@ -187,6 +187,18 @@ namespace MusicCollection
             return $"{hours} год {minutes:D2} хв {seconds:D2} с";
         }
 
+        static void PrintTableHeader()
+        {
+            Console.WriteLine($"{"№",4}{"Виконавець",-22}{"Назва",-26}{"Альбом",-22}{"Рік",6}{"Трив.",8}{"Жанр",6}{"Прослух.",12}");
+            Console.WriteLine(new string('-', 106));
+        }
+
+        static void PrintTrackRow(int i)
+        {
+            string time = $"{durations[i] / 60}:{durations[i] % 60:D2}";
+            Console.WriteLine($"{ids[i],4}{artists[i],-22}{titles[i],-26}{albums[i],-22}{years[i],6}{time,8}{genreIds[i],6}{plays[i],12}");
+        }
+
         static void PrintTracks()
         {
             Console.WriteLine("=== Усі треки ===");
@@ -197,13 +209,11 @@ namespace MusicCollection
                 return;
             }
 
-            Console.WriteLine($"{"№",4}{"Виконавець",-22}{"Назва",-26}{"Альбом",-22}{"Рік",6}{"Трив.",8}{"Жанр",6}{"Прослух.",12}");
-            Console.WriteLine(new string('-', 106));
+            PrintTableHeader();
 
             for (int i = 0; i < count; i++)
             {
-                string time = $"{durations[i] / 60}:{durations[i] % 60:D2}";
-                Console.WriteLine($"{ids[i],4}{artists[i],-22}{titles[i],-26}{albums[i],-22}{years[i],6}{time,8}{genreIds[i],6}{plays[i],12}");
+                PrintTrackRow(i);
             }
 
             Console.WriteLine(new string('-', 106));
@@ -211,6 +221,42 @@ namespace MusicCollection
 
             int totalSeconds = CalculateTotalDuration(durations, count);
             Console.WriteLine($"Загальна тривалість колекції: {FormatDuration(totalSeconds)} ({totalSeconds} с).");
+        }
+
+        static void SearchByText()
+        {
+            Console.WriteLine("=== Пошук за частиною тексту ===");
+
+            if (count == 0)
+            {
+                Console.WriteLine("Сховище порожнє.");
+                return;
+            }
+
+            string query = ReadText("Частина виконавця або назви: ");
+            int found = 0;
+
+            for (int i = 0; i < count; i++)
+            {
+                if (artists[i].Contains(query) || titles[i].Contains(query))
+                {
+                    if (found == 0)
+                    {
+                        PrintTableHeader();
+                    }
+                    PrintTrackRow(i);
+                    found++;
+                }
+            }
+
+            if (found == 0)
+            {
+                Console.WriteLine($"За запитом «{query}» нічого не знайдено.");
+                return;
+            }
+
+            Console.WriteLine(new string('-', 106));
+            Console.WriteLine($"Знайдено: {found}.");
         }
 
         static string ReadText(string prompt)
