@@ -35,7 +35,7 @@ namespace MusicCollection
                 {
                     case "1": PrintTracks(); Pause(); break;
                     case "2": AddTrack(); Pause(); break;
-                    case "3": SearchByText(); Pause(); break;
+                    case "3": FindTracks(); Pause(); break;
                     case "4":
                     case "5":
                     case "6":
@@ -223,6 +223,25 @@ namespace MusicCollection
             Console.WriteLine($"Загальна тривалість колекції: {FormatDuration(totalSeconds)} ({totalSeconds} с).");
         }
 
+        static void FindTracks()
+        {
+            Console.WriteLine("=== Пошук ===");
+            Console.WriteLine("1 — за частиною виконавця або назви");
+            Console.WriteLine("2 — за діапазоном прослуховувань");
+            Console.WriteLine("0 — назад");
+            Console.Write("Ваш вибір: ");
+            string choice = Console.ReadLine();
+            Console.WriteLine();
+
+            switch (choice)
+            {
+                case "1": SearchByText(); break;
+                case "2": SearchByRange(); break;
+                case "0": break;
+                default: ShowInvalidChoice(); break;
+            }
+        }
+
         static void SearchByText()
         {
             Console.WriteLine("=== Пошук за частиною тексту ===");
@@ -252,6 +271,50 @@ namespace MusicCollection
             if (found == 0)
             {
                 Console.WriteLine($"За запитом «{query}» нічого не знайдено.");
+                return;
+            }
+
+            Console.WriteLine(new string('-', 106));
+            Console.WriteLine($"Знайдено: {found}.");
+        }
+
+        static void SearchByRange()
+        {
+            Console.WriteLine("=== Пошук за діапазоном прослуховувань ===");
+
+            if (count == 0)
+            {
+                Console.WriteLine("Сховище порожнє.");
+                return;
+            }
+
+            int from = ReadInt("Прослуховувань від (0–1000000000): ", 0, 1000000000);
+            int to = ReadInt("Прослуховувань до (0–1000000000): ", 0, 1000000000);
+
+            if (from > to)
+            {
+                Console.WriteLine("Помилка: нижня межа більша за верхню.");
+                return;
+            }
+
+            int found = 0;
+
+            for (int i = 0; i < count; i++)
+            {
+                if (plays[i] >= from && plays[i] <= to)
+                {
+                    if (found == 0)
+                    {
+                        PrintTableHeader();
+                    }
+                    PrintTrackRow(i);
+                    found++;
+                }
+            }
+
+            if (found == 0)
+            {
+                Console.WriteLine($"Треків із прослуховуваннями від {from} до {to} не знайдено.");
                 return;
             }
 
